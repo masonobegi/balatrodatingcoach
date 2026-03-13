@@ -1,0 +1,150 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Jackson Gibbs | Balatro + Dating Coaching</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700;800&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="style.css" />
+</head>
+<body>
+  <header class="hero">
+    <div class="hero__content container">
+      <p class="pill">Balatro + Dating Coaching</p>
+      <h1>Get coached by <span>Jackson Gibbs</span></h1>
+      <p class="hero__subtitle">
+        The legend with <strong>NaN∞ energy on Balatro</strong> and peak giga-chad confidence training.
+        Learn better deck decisions and stronger real-world presence in one system.
+      </p>
+      <div class="hero__actions">
+        <a href="#coach-lab" class="btn btn--primary">Build My Plan</a>
+        <a href="#drill-generator" class="btn btn--ghost">Generate Daily Drill</a>
+        <a href="#book-session" class="btn btn--ghost">Book a Session</a>
+      </div>
+    </div>
+  </header>
+
+  <main class="container stack">
+    <section class="card intro">
+      <h2>Why Jackson Gibbs?</h2>
+      <p>
+        Because nobody blends card-game precision and social dominance like he does. Jackson’s Balatro reads
+        feel mathematically unfair, and his dating coaching pushes confidence, communication, and composure.
+      </p>
+      <ul class="tag-list">
+        <li>Balatro Pattern Mastery</li>
+        <li>Approach Confidence</li>
+        <li>NaN∞ Decision-Making</li>
+        <li>GigaChad Presence Training</li>
+      </ul>
+
+      <div class="theme-gallery" aria-label="Balatro and dating themed images">
+        <figure class="theme-item">
+          <img src="IMG_4202.JPEG" alt="Balatro themed image" />
+          <figcaption>Balatro Image</figcaption>
+        </figure>
+        <figure class="theme-item">
+          <img src="IMG_9989.JPG" alt="Photo of Jackson Gibbs" />
+          <figcaption>Jackson Gibbs</figcaption>
+        </figure>
+      </div>
+    </section>
+
+    <section id="coach-lab" class="card">
+      <h2>Interactive Coaching Lab</h2>
+      <p>Set your current levels and get a custom Jackson Gibbs coaching direction.</p>
+
+      <div class="slider-grid">
+        <label for="balatroSkill">
+          Balatro Skill
+          <span id="balatroSkillValue">50</span>
+        </label>
+        <input type="range" id="balatroSkill" min="0" max="100" value="50" />
+
+        <label for="datingConfidence">
+          Dating Confidence
+          <span id="datingConfidenceValue">50</span>
+        </label>
+        <input type="range" id="datingConfidence" min="0" max="100" value="50" />
+      </div>
+
+      <div class="score-panel">
+        <p class="score-label">GigaChad Index</p>
+        <p class="score-value"><span id="gigachadScore">50</span>/100</p>
+        <p id="coachRecommendation" class="score-recommendation">
+          Solid start. Jackson would tune your fundamentals in both lanes.
+        </p>
+      </div>
+    </section>
+
+    <section id="drill-generator" class="card">
+      <h2>Daily Balatro + Dating Drill</h2>
+      <p>Hit the button for a random challenge combo from Jackson’s playbook.</p>
+      <button id="generateDrill" class="btn btn--primary" type="button">Generate Drill</button>
+      <div class="drill-output" id="drillOutput" aria-live="polite">
+        <article class="drill-column">
+          <p class="drill-label">Balatro Drill</p>
+          <p class="drill-text">Play one run focused only on economy jokers.</p>
+        </article>
+        <article class="drill-column">
+          <p class="drill-label">Dating Drill</p>
+          <p class="drill-text">Start one friendly conversation with calm eye contact.</p>
+        </article>
+      </div>
+    </section>
+
+    <section class="card testimonials">
+      <h2>What people say</h2>
+      <p id="testimonialText">
+        “Jackson took my Balatro lines from random to surgical. Also made me way smoother in conversation.”
+      </p>
+      <div class="dots" id="testimonialDots" aria-hidden="true"></div>
+    </section>
+
+    <section id="book-session" class="card">
+      <h2>Book a Session</h2>
+      <p>Send your request here. It saves locally in this browser only.</p>
+
+      <form id="bookingForm" class="booking-form" novalidate>
+        <div class="form-grid">
+          <label for="leadName">Name</label>
+          <input id="leadName" name="name" type="text" autocomplete="name" required />
+
+          <label for="leadEmail">Email</label>
+          <input id="leadEmail" name="email" type="email" autocomplete="email" required />
+
+          <label for="leadFocus">Main Focus</label>
+          <select id="leadFocus" name="focus" required>
+            <option value="">Choose one</option>
+            <option value="balatro">Balatro Mastery</option>
+            <option value="dating">Dating Confidence</option>
+            <option value="both">Both</option>
+          </select>
+
+          <label for="leadMessage">Message</label>
+          <textarea id="leadMessage" name="message" rows="4" placeholder="Goals, current level, or what you want help with."></textarea>
+        </div>
+
+        <div class="booking-actions">
+          <button type="submit" class="btn btn--primary">Save Booking Request</button>
+          <button id="clearLeads" type="button" class="btn btn--ghost">Clear Saved Leads</button>
+        </div>
+      </form>
+
+      <p id="bookingStatus" class="booking-status" aria-live="polite"></p>
+      <p class="muted booking-meta"><span id="savedLeadCount">0</span> saved request(s) in this browser.</p>
+    </section>
+  </main>
+
+  <footer class="footer">
+    <div class="container footer__content">
+      <p>Jackson Gibbs Coaching · Balatro mastery + dating confidence</p>
+      <p class="muted">Built as an interactive JS landing page.</p>
+    </div>
+  </footer>
+
+  <script src="script.js"></script>
+</body>
+</html>
