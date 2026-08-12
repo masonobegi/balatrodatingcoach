@@ -123,13 +123,15 @@ export function StyleControls({
 
       <Group label="Detail">
         <div className="flex flex-wrap gap-4">
+          {/* Framed as adding something optional, not as revealing a field
+              they failed to fill in. */}
           <Toggle
-            label="Show years"
+            label="Add birth & death years"
             checked={config.showDates}
             onChange={(v) => onChange({ showDates: v })}
           />
           <Toggle
-            label="Show places"
+            label="Add birthplaces"
             checked={config.showPlaces}
             onChange={(v) => onChange({ showPlaces: v })}
           />

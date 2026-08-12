@@ -160,7 +160,25 @@ export const DEFAULT_CONFIG: ChartConfig = {
   theme: "heirloom",
   title: "",
   subtitle: "",
-  showDates: true,
+  /*
+   * Years are OFF by default, and this is the single biggest friction decision
+   * in the builder.
+   *
+   * With years on, every person asks for four boxes — first name, last name,
+   * born, died — so a seven-name chart presents twenty-eight inputs. Measured
+   * in the real page it was thirty. "Seven names" is an easy promise; thirty
+   * boxes is homework, and the gap between the two is where people quit.
+   *
+   * The second problem is worse than the arithmetic. A gift buyer usually does
+   * not know her grandmother's birth year. Asking for it does not just cost a
+   * keystroke — it tells her she is unqualified to make this, at the exact
+   * moment we need her to feel she already has everything required.
+   *
+   * Off, it is two boxes per person and the names set larger. Anyone who wants
+   * dates can switch them on in one click, and the historian segment always
+   * will.
+   */
+  showDates: false,
   showPlaces: false,
 };
 

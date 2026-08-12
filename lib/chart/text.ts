@@ -76,6 +76,38 @@ export function fitName(parts: NameParts, maxWidth: number, fontSize: number): s
   return truncate(last, maxWidth, fontSize);
 }
 
+/**
+ * Fit a name by shrinking the type before sacrificing any of it.
+ *
+ * `fitName` alone abbreviates at a fixed size, which produces a perverse
+ * result: remove the dates from a chart, the name size grows to fill the freed
+ * space, and a name that previously fitted whole is now abbreviated at the
+ * larger size. More room, less name.
+ *
+ * A reader would rather see "Thomas O'Connell" slightly smaller than
+ * "T. O'Connell" slightly larger, so size gives way first. Abbreviation only
+ * begins once the full name would need to drop below `minSize`, where it would
+ * start to look like a mistake next to its neighbours.
+ */
+export function fitNameAdaptive(
+  parts: NameParts,
+  maxWidth: number,
+  preferredSize: number,
+  minSize: number,
+): { text: string; size: number } {
+  const full = [parts.given.trim(), parts.surname.trim()].filter(Boolean).join(" ");
+  if (!full) return { text: "", size: preferredSize };
+
+  const widthAtOne = measureText(full, 1);
+  if (widthAtOne <= 0) return { text: full, size: preferredSize };
+
+  const sizeThatFits = maxWidth / widthAtOne;
+  if (sizeThatFits >= preferredSize) return { text: full, size: preferredSize };
+  if (sizeThatFits >= minSize) return { text: full, size: sizeThatFits };
+
+  return { text: fitName(parts, maxWidth, preferredSize), size: preferredSize };
+}
+
 export function truncate(text: string, maxWidth: number, fontSize: number): string {
   if (measureText(text, fontSize) <= maxWidth) return text;
   const ellipsis = "…";

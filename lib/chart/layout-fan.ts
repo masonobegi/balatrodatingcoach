@@ -27,7 +27,7 @@ import {
   lifespan,
   slotsInGeneration,
 } from "./types";
-import { fitFontSize, fitName, measureText, truncate, wrapText } from "./text";
+import { fitFontSize, fitName, fitNameAdaptive, measureText, truncate, wrapText } from "./text";
 
 export interface Wedge {
   n: number;
@@ -342,13 +342,20 @@ function rootLabel(
 function buildLines(
   person: Person, maxWidth: number, nameSize: number, config: ChartConfig,
 ): TextLine[] {
+  // Shrink the type before abbreviating — a whole name set slightly smaller
+  // beats an initialised one set slightly larger.
+  const fitted = fitNameAdaptive(
+    { given: person.given, surname: person.surname },
+    maxWidth,
+    nameSize,
+    nameSize * 0.72,
+  );
   const metaSize = nameSize * 0.66;
-  const name = fitName({ given: person.given, surname: person.surname }, maxWidth, nameSize);
   const meta = config.showDates ? lifespan(person) : "";
   const place =
     config.showPlaces && person.place ? truncate(person.place, maxWidth, metaSize) : "";
 
-  const out: TextLine[] = [{ text: name, size: nameSize, role: "name", dy: 0 }];
+  const out: TextLine[] = [{ text: fitted.text, size: fitted.size, role: "name", dy: 0 }];
   if (meta) out.push({ text: meta, size: metaSize, role: "meta", dy: 0 });
   if (place) out.push({ text: place, size: metaSize, role: "meta", dy: 0 });
 
