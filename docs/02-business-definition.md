@@ -1,5 +1,30 @@
 # Phase 2 — Business Definition
 
+> ## ⚠️ Superseded on one point: framing is disabled at launch
+>
+> This document was written while framed prints were still in the catalogue at a
+> flat +$50. **They are not.** `FRAMING_ENABLED` in `lib/pricing.ts` is `false`,
+> and the storefront sells unframed prints only.
+>
+> The reasoning is in this repo's own analysis, and `docs/03-unit-economics.md`
+> derives it independently: incremental gross profit on a frame is
+> `$45.95 − 1.12Δ`, giving break-even at a frame delta of **$41–45** against a
+> modelled delta of **$38 at 18×24 and $48 at 24×36**. Recovered third-party
+> audits put a framed A2 near **€48** (€38 of it the frame) against **€10** for
+> fine-art paper, and recorded **$23.07 of shipping on a single mug** — glazed,
+> heavy goods are where print-on-demand margin dies, before adding breakage and
+> replacement cost.
+>
+> Moving framed attach from 0% to 75% was calculated to change gross profit per
+> order by **$1.92** while costing **16 margin points**. Framed earns less
+> absolute profit on a larger, more fragile parcel.
+>
+> Every framed code path is live and tested. Re-enable the flag once real
+> delivered framed cost is confirmed below ~$45. Until then, read framed figures
+> below as modelling, not as the live catalogue.
+
+
+
 Descends from `docs/00-decision-brief.md`. That file is the source of truth for
 *what* the business is. This file defines it *completely* — brand, buyers,
 catalogue, SKUs, prices, costs, shipping, fulfilment, returns, offers, email,

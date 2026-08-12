@@ -1,0 +1,11 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64" role="img" aria-label="Kinline">
+  <!-- A miniature fan chart: the product reduced to its smallest legible form.
+       Three rings and a centre, on the brand's warm paper. -->
+  <rect width="64" height="64" rx="8" fill="#FBF8F2"/>
+  <g fill="none" stroke="#7A5C3E" stroke-linecap="round">
+    <path d="M12 44 A20 20 0 0 1 52 44" stroke-width="3.2"/>
+    <path d="M19 44 A13 13 0 0 1 45 44" stroke-width="3.2" opacity="0.72"/>
+    <path d="M26 44 A6 6 0 0 1 38 44" stroke-width="3.2" opacity="0.46"/>
+  </g>
+  <circle cx="32" cy="44" r="3.4" fill="#23201B"/>
+</svg>
