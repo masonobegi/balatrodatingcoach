@@ -4,14 +4,16 @@ import { useCallback, useEffect, useMemo, useRef, useState } from "react";
 import Link from "next/link";
 
 import { ChartCanvas } from "./chart-canvas";
+import { GedcomImport } from "./gedcom-import";
 import { PersonField } from "./person-field";
 import { StyleControls } from "./style-controls";
 import { fullRelationLabel, GENERATION_HEADINGS } from "@/lib/chart/relations";
 import {
   type ChartDocument,
-  type PaperSize,
+  type PeopleMap,
   type Person,
   MAX_GENERATIONS,
+  MIN_GENERATIONS,
   countFilled,
   emptyDocument,
   generationRange,
@@ -173,6 +175,31 @@ export function Builder({ initial }: { initial?: ChartDocument & { id?: string; 
   const maxGenForStyle =
     doc.config.style === "tree" ? MAX_TREE_GENERATIONS : MAX_GENERATIONS;
 
+  /**
+   * Replaces the chart from an imported GEDCOM. Reveals every generation at
+   * once, because an importer is not being walked through anything — they
+   * already have the data and want to see it laid out.
+   */
+  const importFromGedcom = (people: PeopleMap, rootLabel: string) => {
+    setDoc((d) => {
+      const deepest = Object.keys(people).reduce(
+        (max, key) => Math.max(max, Math.floor(Math.log2(Number(key))) + 1),
+        1,
+      );
+      const generations = Math.min(Math.max(deepest, MIN_GENERATIONS), maxGenForStyle);
+      const surname = rootLabel.split("(")[0]?.trim().split(/\s+/).pop() ?? "";
+      return {
+        config: {
+          ...d.config,
+          generations,
+          title: d.config.title || (surname ? `The ${surname} Family` : d.config.title),
+        },
+        people,
+      };
+    });
+    setVisibleGen(maxGenForStyle);
+  };
+
   const revealNext = () => {
     const next = Math.min(visibleGen + 1, maxGenForStyle);
     setVisibleGen(next);
@@ -274,6 +301,8 @@ export function Builder({ initial }: { initial?: ChartDocument & { id?: string; 
                 : "."}
             </p>
           )}
+
+          <GedcomImport generations={doc.config.generations} onImport={importFromGedcom} />
         </div>
 
         {/* --------------------------------------------------- Preview column */}

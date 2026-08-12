@@ -6,7 +6,7 @@
   "scripts": {
     "dev": "next dev",
     "build": "next build",
-    "start": "next start",
+    "start": "next start -H 0.0.0.0",
     "lint": "next lint",
     "typecheck": "tsc --noEmit",
     "db:generate": "drizzle-kit generate",
@@ -14,7 +14,8 @@
     "db:seed": "tsx scripts/seed.ts",
     "test": "tsx --test tests/*.test.ts",
     "test:journey": "node scripts/journey.mjs",
-    "preview": "tsx scripts/preview.ts"
+    "preview": "tsx scripts/preview.ts",
+    "test:builder": "node scripts/builder-test.mjs"
   },
   "dependencies": {
     "@fontsource/eb-garamond": "^5.3.0",

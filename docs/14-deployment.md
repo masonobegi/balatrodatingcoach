@@ -1,8 +1,7 @@
 # Deployment
 
-Nothing here needs a credit card except the domain, Vercel Pro, and Neon
-(~$26/month combined). Work top to bottom; each step says what breaks if you
-skip it.
+Deploys to **Railway** (app + Postgres in one project, ~$12/month) plus a
+domain. Work top to bottom; each step says what breaks if you skip it.
 
 ---
 
@@ -38,21 +37,45 @@ Changing it is a ten-minute job now and a painful one after launch.
 
 ---
 
-## 2 · Database — Neon (~$5/mo)
+## 2 · App and database — Railway (~$12/mo)
 
-1. Create a project at neon.tech, region nearest your customers.
-2. **Take the Launch plan, not Free.** The free tier suspends compute when the
-   project exhausts its monthly CU-hours and does *not* wake on the next
-   connection — that is a store down for the rest of the billing period.
-3. Copy the **pooled** connection string → `DATABASE_URL`.
-4. Generate and apply the schema:
+Railway hosts both, in one project, on a private network. That means no egress
+charge between app and database and a single bill.
 
-```bash
-npm run db:generate     # writes SQL to drizzle/
-npm run db:migrate
-```
+1. **New Project → Deploy from GitHub repo** → pick this repository.
+   `railway.toml` is already committed, so the build and start commands, the
+   healthcheck, and the restart policy are configured.
+2. **New → Database → Add PostgreSQL** in the same project.
+3. In the app service's **Variables**, reference the database rather than
+   pasting a URL:
 
-*Skip this and every order vanishes on the next deploy.*
+   ```
+   DATABASE_URL=${{Postgres.DATABASE_URL}}
+   ```
+
+   Railway resolves that at deploy time and keeps it correct if credentials
+   rotate.
+4. **Settings → Networking → Generate Domain** (or add your own).
+5. Add the rest of the variables from `.env.example`, and set
+   `NEXT_PUBLIC_SITE_URL` to the real domain.
+6. Apply the schema. Either run it locally against the public connection
+   string, or use `railway run`:
+
+   ```bash
+   railway run npm run db:migrate
+   railway run npm run db:seed      # discount codes
+   ```
+
+The healthcheck at `/api/health` round-trips the database, so a deploy with a
+broken connection string fails and rolls back rather than serving a store that
+cannot record an order.
+
+*Skip the migration and every request that touches the database errors.*
+
+> **Neon instead?** Also fine — set `DATABASE_URL` to a Neon pooled string and
+> `lib/db/index.ts` switches to Neon's HTTP driver automatically. Railway
+> Postgres is the default recommendation only because the account already
+> exists and co-locating is simpler.
 
 ---
 
@@ -92,21 +115,19 @@ reaching customers.*
 
 ---
 
-## 5 · Hosting — Vercel Pro ($20/mo)
+## 5 · Domain and secrets
 
-1. Import the GitHub repo.
-2. **Pro, not Hobby.** Hobby's Fair Use terms forbid "any method of requesting
-   or processing payment from visitors". The risk is unannounced suspension.
-3. Add every variable from `.env.example` under Production.
-4. Set `NEXT_PUBLIC_SITE_URL` to your real domain — Stripe redirect URLs and
-   canonical tags are built from it.
-5. Generate a session secret:
+1. Point your domain at the Railway service (**Settings → Networking → Custom
+   Domain**) and add the CNAME it gives you.
+2. Generate a session secret:
 
-```bash
-node -e "console.log(require('crypto').randomBytes(32).toString('base64url'))"
-```
+   ```bash
+   node -e "console.log(require('crypto').randomBytes(32).toString('base64url'))"
+   ```
 
-Set it as `SESSION_SECRET`, and pick a real `ADMIN_PASSWORD`.
+   Set it as `SESSION_SECRET`, and pick a real `ADMIN_PASSWORD`.
+3. Confirm `NEXT_PUBLIC_SITE_URL` matches the live domain exactly — Stripe
+   redirect URLs, canonical tags, and share links are all built from it.
 
 ---
 
@@ -134,7 +155,9 @@ sandbox order end to end, then flip to `false`.
 
 - [ ] `npm run build` passes
 - [ ] `npm test` — 33 passing
+- [ ] `npm run test:builder` — 16 passing (needs a running server)
 - [ ] `node scripts/journey.mjs https://yourdomain.com` — 58 passing
+- [ ] `curl https://yourdomain.com/api/health` returns `"status":"ok"`
 - [ ] A real card buys a real chart, and the order appears in `/admin`
 - [ ] The confirmation email arrives in a Gmail **inbox**, not spam
 - [ ] Share a chart link into iMessage/WhatsApp — the preview card renders

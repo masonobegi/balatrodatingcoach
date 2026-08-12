@@ -1,0 +1,31 @@
+# Railway deployment.
+#
+# Next.js runs here as a normal long-lived Node server rather than as
+# serverless functions, which suits this app well: the 300 DPI rasteriser is a
+# native module with no cold start and no bundle-size ceiling, the Postgres
+# pool is reused across requests, and there is no per-invocation timeout on
+# artwork rendering.
+#
+# Nixpacks detects Next.js and does the right thing, so the build command is
+# only stated to make it explicit.
+
+[build]
+builder = "nixpacks"
+buildCommand = "npm run build"
+
+[deploy]
+startCommand = "npm run start"
+
+# Railway restarts the container if this stops answering. The endpoint checks
+# the database too, so a deploy with a broken connection string fails fast
+# instead of serving a store that cannot take orders.
+healthcheckPath = "/api/health"
+healthcheckTimeout = 30
+
+restartPolicyType = "on_failure"
+restartPolicyMaxRetries = 3
+
+# One instance is right until traffic justifies otherwise. Nothing in this app
+# holds state in process memory that matters — rate-limit counters are the only
+# in-process state, and they degrade gracefully across instances.
+numReplicas = 1

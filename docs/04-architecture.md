@@ -11,8 +11,8 @@ marked otherwise. Print-on-demand costs were **not** verifiable and are labelled
 | Layer | Choice | Cost | Why this and not the alternative |
 |---|---|---|---|
 | Framework | Next.js 16, React 19, TypeScript | — | One deployable unit for storefront, API, and admin. The chart engine is pure TypeScript, so the *same* renderer runs in the browser for live preview and on the server for print. |
-| Hosting | **Vercel Pro, 1 seat** | **$20/mo** | Hobby is not merely cheaper — it is contractually unavailable. Vercel's Fair Use terms restrict Hobby to non-commercial use and require Pro for "any method of requesting or processing payment from visitors." The risk is unannounced suspension, not a bill. |
-| Database | **Neon Postgres, Launch** | **$5/mo** | The free tier suspends compute when the project exhausts its monthly CU-hours, and it does *not* wake on the next connection — that is a store down for the rest of the billing period. $5 buys out of the worst failure mode on this list. |
+| Hosting | **Railway** | ~$5–15/mo | The founder already has an account, which settles it — but it is also the better technical fit. See below. |
+| Database | **Railway Postgres** | ~$5–10/mo | Same project, same private network, one bill, no egress charge between app and database. Neon remains a drop-in alternative and the driver layer already detects which one it is talking to. |
 | ORM | Drizzle | — | SQL-shaped, no runtime, generates plain migrations. |
 | Payments | **Stripe** | 2.9% + $0.30 | Not a preference — a constraint. Lemon Squeezy, Paddle, and Polar all decline physical goods, so the merchant-of-record route that would have absorbed sales tax is closed. |
 | Sales tax | Stripe Tax | 0.5% of *registered* volume | Free nexus-threshold monitoring is the highest-leverage free thing on this list. Only charges where you are actually registered. |
@@ -22,7 +22,34 @@ marked otherwise. Print-on-demand costs were **not** verifiable and are labelled
 | Rasterisation | resvg (in-process) | $0 | Native module, marked `serverExternalPackages`. |
 | Typeface | EB Garamond, self-hosted | $0 | SIL Open Font License. No CDN request, no consent question, deterministic metrics. |
 
-**Fixed cost at launch: ~$26/month.** A quarter of the ceiling.
+**Fixed cost at launch: ~$12–26/month**, depending on Railway usage.
+
+### Why Railway suits this app better than serverless
+
+The decision was made for us, but it happens to remove three constraints this
+codebase was otherwise designed around:
+
+- **The rasteriser gets easier.** resvg is a native module and a 24×36" sheet at
+  300 DPI is a 7200×10800 raster. On serverless that means bundle-size limits,
+  cold starts, and a per-invocation timeout. On a long-lived container it is
+  just a function call — no `maxDuration`, no native-module packaging problem,
+  and the poster font is simply a file on disk.
+- **The database connection is reused.** Serverless wants one connection per
+  instance because there may be hundreds of instances; one persistent server
+  wants a real pool. `lib/db/index.ts` now detects which it is and sizes the
+  pool accordingly (10 vs 1) — getting that backwards is a silent performance
+  bug rather than an error, so it is derived, not hard-coded.
+- **The Vercel Hobby licensing problem disappears.** Vercel's Fair Use terms
+  forbid "any method of requesting or processing payment from visitors" on
+  Hobby, which would have forced Pro at $20/mo. Railway has no such clause.
+
+The one thing given up is Vercel's edge CDN for static assets. Marketing pages
+are prerendered and Cloudflare can sit in front for free if that ever matters.
+At this traffic it does not.
+
+`railway.toml` sets a healthcheck against `/api/health`, which round-trips the
+database — so a deploy carrying a broken connection string fails and rolls back
+rather than quietly serving a storefront that cannot record an order.
 
 ### Why analytics are self-hosted
 
@@ -45,18 +72,23 @@ Assumes ~$95 AOV. Variable costs exclude COGS, which is in
 
 | Service | 0 orders | 100/mo | 1,000/mo | 10,000/mo |
 |---|---|---|---|---|
-| Vercel Pro | $20 | $20 | $20 | ~$75 |
-| Neon | $5 | $5 | ~$10 | ~$35 |
+| Railway — app | ~$5 | ~$5 | ~$15 | ~$60 |
+| Railway — Postgres | ~$5 | ~$5 | ~$12 | ~$45 |
 | Resend | $0 | $0 | $20 | *migrate to SES ~$10* |
 | Lifecycle email (5k+ contacts) | — | — | ~$40 | ~$300+ |
 | Cloudflare R2 | ~$0 | ~$0 | ~$1 | ~$5 |
-| Background worker | — | — | $5 | ~$20 |
 | Domain (amortised) | $1.25 | $1.25 | $1.25 | $1.25 |
-| **Total fixed** | **~$26** | **~$26** | **~$97** | **~$446** |
+| **Total fixed** | **~$12** | **~$12** | **~$89** | **~$421** |
 
 At the $95k/month revenue mark (1,000 orders), fixed infrastructure is still
 under $100/month with no architectural change. That is the answer to "does this
 survive success".
+
+Railway bills by usage, so the low end is genuinely low — an idle store with no
+traffic costs close to the $5 plan minimum. The trade is that a traffic spike
+shows up on the bill rather than being absorbed by a flat fee. Set a usage alert
+in the Railway dashboard; at these volumes the exposure is tens of dollars, not
+hundreds.
 
 ### Variable cost
 

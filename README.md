@@ -26,7 +26,7 @@ opening a single account.
 | **Price / AOV** | $79 hero SKU. **Blended AOV $89** at the modelled mix. |
 | **Gross margin** | **71%** — $63 gross profit per order after COGS, shipping and Stripe fees. |
 | **Break-even CAC** | **$63** |
-| **Monthly fixed costs** | **~$26** (Vercel Pro $20, Neon $5, domain ~$1). Under $100 even at $95k/mo revenue. |
+| **Monthly fixed costs** | **~$12** (Railway app + Postgres, domain amortised). Under $100 even at $95k/mo revenue. |
 | **Orders for $1,000 revenue** | **12/month** — about one every 2½ days. ~560 visitors/month at 2% conversion. |
 | **Orders for $1,000 gross profit** | **16/month** (≈$1,430 revenue). The distinction matters; don't confuse the two. |
 | **Primary acquisition** | The share loop (free) → Facebook genealogy groups and local genealogical societies. |
@@ -43,7 +43,7 @@ at **9–12%**. That is the base rate, and this business does not escape it by
 being well built.
 
 What is genuinely in its favour: the bar is low (12 orders a month), the margin
-is high enough to absorb mistakes, fixed costs are $26/month so failure is
+is high enough to absorb mistakes, fixed costs are ~$12/month so failure is
 cheap, launch timing captures Q4 — the single best gifting window — and the
 software is a real differentiator rather than a cost centre.
 
@@ -61,7 +61,7 @@ are already using the product.
    disabled — confirm it, then update `lib/pricing.ts`.
 3. **Clear the name.** "Kinline" has not been checked against USPTO TESS. It
    lives in one file (`lib/site.ts`); changing it now is trivial.
-4. **Buy the domain and deploy.** `docs/14-deployment.md`, about an hour.
+4. **Buy the domain and deploy to Railway.** `docs/14-deployment.md`, about an hour.
 5. **Join three genealogy Facebook groups and read for a week before posting.**
    The cold-start problem is the real problem, and it is solved with people, not
    code.
@@ -77,6 +77,7 @@ are already using the product.
 | [`02-business-definition.md`](docs/02-business-definition.md) | Brand, catalogue, pricing, fulfilment, retention. |
 | [`03-unit-economics.md`](docs/03-unit-economics.md) | Conservative / base / strong, with the arithmetic shown. |
 | [`04-architecture.md`](docs/04-architecture.md) | Stack, costs at 0→10k orders, security, scaling. |
+| [`05-where-money-returns.md`](docs/05-where-money-returns.md) | **What a marginal dollar actually buys** — ranked, and it is not hosting. |
 | [`06-design-system.md`](docs/06-design-system.md) | Typography, colour, voice, mobile, accessibility. |
 | [`07-seo-engine.md`](docs/07-seo-engine.md) | Keyword clusters and why programmatic SEO was rejected. |
 | [`08-acquisition.md`](docs/08-acquisition.md) | Campaigns with hooks, spend caps, and failure criteria. |
@@ -142,6 +143,7 @@ The share loop depends on charts being reachable without a login.
 ```bash
 npm test                    # 33 unit tests — chart engine + pricing
 npm run test:journey        # 58 end-to-end checks against a running server
+npm run test:builder        # 16 browser checks — live preview, GEDCOM import
 npm run build               # production build
 ```
 
