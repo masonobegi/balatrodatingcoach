@@ -8,7 +8,8 @@ descends from this file.
 ## The business
 
 **Kinline** — beautifully designed, archival-quality family tree charts, built in
-the browser in about five minutes and delivered as a framed or unframed print.
+the browser in about five minutes and delivered as an archival print, shipped
+rolled from the lab straight to the customer.
 
 **We are a gift company, not a genealogy company.** That distinction is the
 entire strategy and it is not cosmetic. See "The objection that shaped this" below.
@@ -117,6 +118,24 @@ this is the only mechanic in the whole plan that gets cheaper as it grows.
 
 ---
 
+## Operating constraint: nothing physical, ever
+
+The operator has no storage space and will not handle stock. This is a hard
+constraint, and print-on-demand already satisfies it — every chart is made after
+it is paid for and shipped from the lab directly to the customer.
+
+Two catalogue items would have quietly broken it, and both are disabled in code:
+
+- **Framing.** Bulky, fragile, and it was already failing on margin.
+- **Gift wrap and a handwritten card.** This one is subtler: wrapping by hand
+  requires the parcel to route lab → operator → wrap → re-ship, which is
+  inventory, labour, storage, and a second shipping leg. The gifting need it
+  served is met better by the chart's own dedication line, which is printed
+  into the artwork and costs nothing.
+
+Any future product idea must pass the same test: **does this require the
+operator to touch a physical object?** If yes, it is not this business.
+
 ## Catalogue and pricing
 
 | Product | Price |
@@ -124,22 +143,24 @@ this is the only mechanic in the whole plan that gets cheaper as it grows.
 | Fan chart or vertical tree, 12×18 | $49 |
 | — 18×24 | $79 |
 | — 24×36 | $119 |
-| Framed (any size) | +$50 |
 | Extra copies, same design (2nd) | −25% |
 | Extra copies, same design (3rd+) | −35% |
-| Gift wrap + handwritten-style card | +$8 |
 | High-resolution digital file | +$15 **post-purchase add-on only**, free with 24×36 |
+| Free shipping | above $75 |
+| ~~Framed~~ | disabled — margin, and it is a physical-handling risk |
+| ~~Gift wrap~~ | disabled — would route every parcel through the operator |
 
-Target AOV ≈ **$95**. Target gross margin ≈ **60–68%** on unframed, lower on
-framed. Precise unit economics, including the honest downside case, are in
-`docs/03-unit-economics.md`.
+Blended AOV ≈ **$89**, gross profit ≈ **$63/order at 71%** — derived from
+`lib/pricing.ts`, not asserted. That puts $1,000 revenue at **12 orders/month**
+and $1,000 *gross profit* at **16**. Full workings, including the honest
+downside case, are in `docs/03-unit-economics.md`.
 
 ---
 
 ## Honest assessment
 
-$1,000/month is **~11 orders/month at a $95 AOV**. That is a genuinely modest
-bar — roughly one order every three days — and it is achievable. It is not,
+$1,000/month is **12 orders/month at an $89 AOV** — roughly one order every two
+and a half days. That is a genuinely modest bar and it is achievable. It is not,
 however, achievable by building a nice website and waiting. Nothing in the
 research suggested the software is the hard part.
 

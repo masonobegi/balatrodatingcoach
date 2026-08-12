@@ -12,31 +12,49 @@ Here is the honest ranking of what a marginal dollar buys, best first.
 
 ---
 
-## 1 · Physical samples — ~$120, do this first
+## 1 · Verify supplier cost — **$0, and nothing gets delivered**
 
-**The single highest-return spend in this entire plan.**
+**The highest-return hour in this plan, and it costs nothing.**
 
-Every cost-of-goods figure in this repository is a modelling assumption. The
-research tooling could not reach a single supplier's live pricing. You are
-currently planning a business on numbers I derived rather than measured.
+Every cost-of-goods figure in this repository is a modelling assumption; the
+research tooling could not reach a single supplier's live pricing. But
+confirming that number does **not** require receiving anything:
 
-Order the same chart, at 18×24, from **Prodigi**, **Gelato**, and one local
-giclée printer. Roughly $40 each delivered.
+1. Create a free Prodigi and Gelato account.
+2. Add an 18×24 (A2) fine-art print to the basket.
+3. Enter a US delivery address and go to the checkout screen.
+4. Read the total. Do not pay.
 
-What that $120 buys:
+That gives you real product cost plus real shipping — the two numbers the whole
+model rests on. Twenty minutes, no account fees, no parcel. Then update
+`PRINT_VARIANTS` in `lib/pricing.ts`.
 
-- **The real margin.** If delivered cost lands above ~$30, the $79 price is
-  wrong and everything downstream of it moves.
-- **The quality answer.** This product's entire pitch is "made to be kept". If
-  the paper feels thin or the type is muddy at small sizes, you find out for
-  $40 rather than after fifty customers do.
-- **Your first photographs.** You cannot photograph a product you have never
-  held, and every real-world shot you will ever need starts here.
-- **The framing decision.** Framing ships disabled because a framed A2 modelled
-  near €48 against €10 for paper. One framed sample settles whether that flag
-  should flip.
+If delivered cost lands above ~$30 at 18×24, the $79 price is wrong and
+everything downstream moves. That is worth knowing before anything else.
 
-Nothing else on this list is worth doing before this.
+## 1b · Judge print quality — one print, once, and not to your address
+
+Cost verification is free; **quality** genuinely needs a physical object. The
+pitch is "made to be kept", and you cannot assert that about paper you have
+never touched.
+
+You do not need it in your house, and you do not need three:
+
+- **Best option — send it to someone who wants one.** Build a real chart of your
+  own family and have the single sample shipped directly to a parent,
+  grandparent, or sibling. It is a genuine gift, it costs ~$25, it proves the
+  supplier end to end, and the recipient's honest reaction is the most useful
+  customer research available to you. Ask them to photograph it — that is your
+  product photography.
+- Or have it delivered to a friend, or to your office.
+- If it must come to you, it is one poster tube. Look at it, photograph it,
+  recycle the tube.
+
+Judge four things: paper weight and texture, whether small type in the outer
+ring is crisp, colour accuracy against the on-screen preview, and packaging.
+
+**Do not order framed samples.** Framing is disabled, and a framed sample is a
+bulky object you would have to store to test a product you are not selling.
 
 ## 2 · Domain and business entity — ~$150 one-off
 
@@ -105,11 +123,18 @@ In rough order of when it would matter:
 
 ## The summary
 
-**Roughly $500 of useful spend exists between here and a validated business**,
-and about $470 of it is samples, entity, and seeded product. The remaining ~$30
-is a month of hosting.
+**Roughly $400 of useful spend exists between here and a validated business**,
+and almost all of it is entity, domain, and seeded product. Supplier-cost
+verification is free. One quality sample is ~$25 and can be a gift to a relative
+rather than a parcel you have to store.
 
 If you want to spend more than $100/month and get a return, the answer is not a
-bigger server. It is: buy the samples this week, give ten charts away to people
-with an audience, and keep infrastructure boring and cheap until there are
-customers whose experience it could improve.
+bigger server. It is: confirm real supplier cost this week, send one chart to a
+relative, give ten more away to people with an audience, and keep infrastructure
+boring and cheap until there are customers whose experience it could improve.
+
+**Nothing in this business requires you to hold stock.** Every print is made
+after it is paid for and shipped from the lab straight to the customer. You
+never receive, store, pack, or post anything — and the two features that would
+have broken that (framing and hand-wrapped gift packaging) are both switched
+off in code for exactly that reason.

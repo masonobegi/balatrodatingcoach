@@ -88,7 +88,26 @@ export const PRINT_VARIANTS: Record<PaperSize, PrintVariant> = {
 };
 
 export const FRAME_UPCHARGE = 6500;
+
+/**
+ * GIFT WRAP IS OFF, and for a structural reason rather than a pricing one.
+ *
+ * Wrapping a print and writing a card by hand requires the parcel to route
+ * through the operator: lab → operator → wrap → re-ship. That is inventory,
+ * storage, labour, and a second shipping leg, and it breaks the one property
+ * that makes this business runnable by one person with no space — nothing
+ * physical ever touches them.
+ *
+ * The gifting need it was meant to serve is already met, and met better, by the
+ * chart's own subtitle line: "For Nana, Christmas 2026" is printed *into* the
+ * artwork, costs nothing, ships direct, and outlives any card.
+ *
+ * Re-enable only with a fulfilment partner that inserts a printed gift note at
+ * the lab. Never by handling parcels yourself.
+ */
+export const GIFT_WRAP_ENABLED = false;
 export const GIFT_WRAP_PRICE = 800;
+
 export const DIGITAL_FILE_PRICE = 1500;
 
 /**
@@ -209,7 +228,9 @@ export function priceOrder(spec: OrderSpec): PricedOrder {
   });
 
   const addons: { label: string; total: number }[] = [];
-  if (spec.giftWrap) {
+  // Normalised here, like framing, so a request made directly to the API while
+  // the add-on is disabled cannot be charged for something nobody will do.
+  if (spec.giftWrap && GIFT_WRAP_ENABLED) {
     addons.push({ label: "Gift wrap & handwritten card", total: GIFT_WRAP_PRICE });
     subtotal += GIFT_WRAP_PRICE;
     assumedCogs += 250;

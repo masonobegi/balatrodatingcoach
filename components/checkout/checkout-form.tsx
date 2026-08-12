@@ -6,7 +6,6 @@ import type { PaperSize } from "@/lib/chart/types";
 import { PAPER_SIZES } from "@/lib/chart/types";
 import {
   FREE_SHIPPING_THRESHOLD,
-  GIFT_WRAP_PRICE,
   PRINT_VARIANTS,
   formatMoney,
   formatMoneyShort,
@@ -36,15 +35,14 @@ export function CheckoutForm({
 }) {
   const [size, setSize] = useState<PaperSize>(defaultSize);
   const [quantity, setQuantity] = useState(1);
-  const [giftWrap, setGiftWrap] = useState(false);
   const [email, setEmail] = useState("");
   const [code, setCode] = useState("");
   const [submitting, setSubmitting] = useState(false);
   const [error, setError] = useState<string | null>(null);
 
   const priced = useMemo(
-    () => priceOrder({ items: [{ size, framed: false, quantity }], giftWrap, digitalFile: false }),
-    [size, quantity, giftWrap],
+    () => priceOrder({ items: [{ size, framed: false, quantity }], giftWrap: false, digitalFile: false }),
+    [size, quantity],
   );
 
   const submit = async (e: React.FormEvent) => {
@@ -59,7 +57,7 @@ export function CheckoutForm({
         body: JSON.stringify({
           chartId,
           items: [{ size, framed: false, quantity }],
-          giftWrap,
+          giftWrap: false,
           digitalFile: false,
           email,
           discountCode: code.trim() || undefined,
@@ -142,26 +140,6 @@ export function CheckoutForm({
             Second copy 25% off, third onwards 35% off.
           </p>
         </div>
-      </section>
-
-      <section>
-        <label className="flex cursor-pointer items-start gap-3">
-          <input
-            type="checkbox"
-            checked={giftWrap}
-            onChange={(e) => setGiftWrap(e.target.checked)}
-            className="mt-1 h-4 w-4 accent-[var(--color-walnut)]"
-          />
-          <span>
-            <span className="block text-[0.9375rem] font-semibold">
-              Gift wrap and a handwritten card — {formatMoneyShort(GIFT_WRAP_PRICE)}
-            </span>
-            <span className="block text-sm text-ink-muted">
-              Wrapped in tissue and tied, with a card we write by hand. Tell us what to
-              write after checkout.
-            </span>
-          </span>
-        </label>
       </section>
 
       <section className="space-y-3">

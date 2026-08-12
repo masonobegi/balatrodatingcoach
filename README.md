@@ -56,9 +56,10 @@ are already using the product.
 1. **Test the assumption before building anything else.** Put the builder in
    front of ten people in the target demographic and watch where they stop.
    ~$50 and one week. `docs/09-first-30-days.md` has the protocol.
-2. **Order physical samples from Prodigi and Gelato.** Every COGS number here is
-   a guess. A framed A2 near €48 against €10 for paper is why framing ships
-   disabled — confirm it, then update `lib/pricing.ts`.
+2. **Confirm real supplier cost — free, nothing delivered.** Add an A2 fine-art
+   print to a Prodigi and a Gelato basket, enter a US address, read the checkout
+   total, don't pay. Twenty minutes. Then update `PRINT_VARIANTS` in
+   `lib/pricing.ts`. Every COGS number here is currently a guess.
 3. **Clear the name.** "Kinline" has not been checked against USPTO TESS. It
    lives in one file (`lib/site.ts`); changing it now is trivial.
 4. **Buy the domain and deploy to Railway.** `docs/14-deployment.md`, about an hour.
@@ -132,6 +133,12 @@ and tested; it is one flag once real costs are known.
 **The print-ready digital file is never sold standalone.** A print-ready file
 *is* the poster, so a cheap tier would remove the reason to buy the print. It
 exists only as a post-purchase add-on and free with the largest size.
+
+**Gift wrap is disabled** (`GIFT_WRAP_ENABLED`). Wrapping by hand would route
+every parcel through the operator — inventory, labour, storage, and a second
+shipping leg. The dedication line printed into the artwork serves the same need
+and costs nothing. **Nothing physical ever touches the operator**; every print
+ships from the lab straight to the customer.
 
 **No account is ever required.** Not for building, sharing, buying, or tracking.
 The share loop depends on charts being reachable without a login.

@@ -5,7 +5,7 @@ import {
   ASSUMED_SHIPPING_COST,
   FRAMING_ENABLED,
   FREE_SHIPPING_THRESHOLD,
-  GIFT_WRAP_PRICE,
+  GIFT_WRAP_ENABLED,
   PRINT_VARIANTS,
   SHIPPING_FLAT,
   cogsFor,
@@ -94,11 +94,18 @@ test("the digital file is never sold standalone and rides free with the largest 
   assert.equal(charged?.total, 1500, "otherwise it is a paid add-on");
 });
 
-test("gift wrap is added and costed", () => {
+test("gift wrap is disabled and cannot be charged for through the API", () => {
+  // Wrapping by hand would route every parcel through the operator, which is
+  // inventory and labour this business is specifically built to avoid. The
+  // dedication line printed into the artwork serves the same need.
+  assert.equal(GIFT_WRAP_ENABLED, false);
+
   const bare = priceOrder({ items: [{ size: "18x24", framed: false, quantity: 1 }], giftWrap: false, digitalFile: false });
   const wrapped = priceOrder({ items: [{ size: "18x24", framed: false, quantity: 1 }], giftWrap: true, digitalFile: false });
-  assert.equal(wrapped.subtotal - bare.subtotal, GIFT_WRAP_PRICE);
-  assert.ok(wrapped.assumedCogs > bare.assumedCogs, "wrap has a real cost");
+
+  assert.equal(wrapped.subtotal, bare.subtotal, "no charge for something nobody will do");
+  assert.equal(wrapped.assumedCogs, bare.assumedCogs);
+  assert.ok(!wrapped.addons.some((a) => /wrap/i.test(a.label)));
 });
 
 test("framing is disabled and cannot be re-enabled through the API", () => {

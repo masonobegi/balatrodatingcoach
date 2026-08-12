@@ -51,7 +51,7 @@ const FAQS = [
   },
   {
     q: "Can I send it straight to the person it's for?",
-    a: "Yes. Enter their address at checkout. Add gift wrap and we'll include a card written by hand — you tell us what to write after you order.",
+    a: "Yes. Enter their address at checkout and it goes straight to them. For the dedication, use the line under the title on the chart itself — \"For Nana, Christmas 2026\". It is printed into the artwork, so it lasts as long as the chart does rather than going in the bin with the wrapping.",
   },
   {
     q: "Who can see my chart?",

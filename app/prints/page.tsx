@@ -8,7 +8,6 @@ import { PAPER_SIZES } from "@/lib/chart/types";
 import {
   COPY_DISCOUNTS,
   FREE_SHIPPING_THRESHOLD,
-  GIFT_WRAP_PRICE,
   PRINT_VARIANTS,
   formatMoneyShort,
 } from "@/lib/pricing";
@@ -51,10 +50,11 @@ export default function PrintsPage() {
 
       <div className="mx-auto mt-8 max-w-2xl text-center text-sm text-ink-muted">
         <p>
-          Free shipping over {formatMoneyShort(FREE_SHIPPING_THRESHOLD)}. Gift wrap and a
-          handwritten card, {formatMoneyShort(GIFT_WRAP_PRICE)}. Extra copies of the same
-          chart are {Math.round(COPY_DISCOUNTS[1] * 100)}% off the second and{" "}
-          {Math.round(COPY_DISCOUNTS[2] * 100)}% off the third onwards.
+          Free shipping over {formatMoneyShort(FREE_SHIPPING_THRESHOLD)}. Extra copies of
+          the same chart are {Math.round(COPY_DISCOUNTS[1] * 100)}% off the second and{" "}
+          {Math.round(COPY_DISCOUNTS[2] * 100)}% off the third onwards. Sending it as a
+          gift? Put the dedication on the chart itself — there's a line for it under the
+          title.
         </p>
       </div>
 
