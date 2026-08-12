@@ -34,8 +34,14 @@ export default function HowItWorksPage() {
       <Section title="2 · Fill in what you know, skip what you don't">
         <p>
           Fields appear one generation at a time, so you are never staring at fifty empty
-          boxes. Three generations is seven people, which most of us can do from memory.
-          Four is fifteen, and that is where the phone calls usually start.
+          boxes. <strong>Three generations is seven people</strong> — the person the
+          chart is for, their two parents, their four grandparents — and that is a
+          finished chart. Most of us can do it from memory in a couple of minutes.
+        </p>
+        <p>
+          Going one further is fifteen names, and that is where the phone calls usually
+          start. It is entirely optional, and a three-generation chart is not a lesser
+          object — it just has larger type.
         </p>
         <p>
           Anything you leave blank stays blank on the chart. The space is kept, so the

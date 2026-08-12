@@ -232,8 +232,10 @@ export function Builder({ initial }: { initial?: ChartDocument & { id?: string; 
           <header>
             <h1 className="text-3xl sm:text-4xl">Build your chart</h1>
             <p className="mt-3 max-w-xl text-[0.9375rem] leading-relaxed text-ink-soft">
-              Work outwards from one person. Skip anything you don't know — the chart
-              leaves a space for them, which is how these have always been drawn.
+              One person, then their parents, then their grandparents. Seven names is a
+              finished chart — you don't need your whole family history, and there are
+              no siblings or cousins to fill in. Skip anything you don't know; the chart
+              leaves a space for them.
             </p>
           </header>
 

@@ -37,13 +37,14 @@ export default function HomePage() {
               drawn properly.
             </h1>
             <p className="prose-kin mt-6 max-w-lg">
-              Type in the names you already know — parents, grandparents, as far back as
-              you can get — and watch a chart take shape as you go. We print it on heavy
-              archival paper and send it to your door.
+              You need seven names: yourself or whoever it's for, their parents, and
+              their grandparents. Type them in and watch the chart take shape. We print
+              it on heavy archival paper and send it to your door.
             </p>
             <p className="mt-4 max-w-lg text-[0.9375rem] leading-relaxed text-ink-muted">
-              No genealogy software. No research. No file to upload. Most people finish
-              in about five minutes using only what they can remember.
+              No research, no genealogy software, no file to upload — this is not a
+              family history project. Most people finish from memory in about two
+              minutes, and you can always add another generation if you know it.
             </p>
 
             <div className="mt-9 flex flex-wrap items-center gap-3">
@@ -95,8 +96,8 @@ export default function HomePage() {
           {[
             {
               n: "01",
-              title: "Type in the names",
-              body: "Start with yourself or the person the chart is for, then work outwards. Leave anything you don't know blank — the chart keeps their place, and gaps look intentional.",
+              title: "Seven names",
+              body: "Whoever the chart is for, their two parents, their four grandparents. That is a finished chart. Leave anything you don't know blank — the chart keeps their place.",
             },
             {
               n: "02",
@@ -212,8 +213,8 @@ export default function HomePage() {
         <div className="grid gap-10 sm:grid-cols-3">
           {[
             {
-              title: "You'll see it before you buy",
-              body: "The preview in the builder is the real artwork at real proportions. Nothing is hidden behind a paywall and there is no mock-up step.",
+              title: "It's smaller than it sounds",
+              body: "This is one line going backwards — no siblings, no cousins, no in-laws. Seven names makes a complete chart. Fifteen if you go one generation further, and most people stop before that.",
             },
             {
               title: "Typos are on us",

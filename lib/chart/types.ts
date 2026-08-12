@@ -140,7 +140,22 @@ export function countFilled(people: PeopleMap, generations: number): number {
 
 export const DEFAULT_CONFIG: ChartConfig = {
   style: "fan",
-  generations: 4,
+  /*
+   * Three generations — seven people — is the default, and that is a
+   * conversion decision rather than an aesthetic one.
+   *
+   * Three generations is the root, both parents and all four grandparents:
+   * names almost everyone has from memory, in about two minutes. Rendered, it
+   * is a complete, framable object with big legible type.
+   *
+   * Four generations asks for fifteen. The eight great-grandparents are
+   * exactly where recall fails, and a chart carrying a full outer ring of
+   * empty wedges reads as *unfinished* rather than as designed negative space
+   * — it makes the customer feel they failed rather than that they are done.
+   * Starting at three and letting them add a generation is strictly better
+   * than starting at four and letting them feel short.
+   */
+  generations: 3,
   size: "18x24",
   theme: "heirloom",
   title: "",

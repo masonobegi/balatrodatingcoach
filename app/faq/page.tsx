@@ -14,6 +14,14 @@ export const metadata: Metadata = {
 
 const FAQS = [
   {
+    q: "How many names do I actually need?",
+    a: "Seven. Whoever the chart is for, their two parents, and their four grandparents — that is a complete, finished chart and it is what most people order. This is one line going straight backwards, so there are no siblings, cousins, aunts or in-laws to fill in. If you want to go one generation further that is eight more names, but plenty of people stop at seven and the chart looks no less finished for it.",
+  },
+  {
+    q: "Do I need to research my family history first?",
+    a: "No, and that is rather the point. This is not a genealogy project — it is a print of what you already know. If you can name your grandparents, you can make one tonight. If you get curious afterwards and want to go deeper, the chart will still be there to add to.",
+  },
+  {
     q: "What if I don't know all the names?",
     a: "Almost nobody does. Leave anything you're unsure of blank and the chart keeps that person's place — an empty space on a family tree is normal, and on a fan chart the gaps look deliberate rather than broken. Most gift charts have real holes in the outer ring.",
   },
