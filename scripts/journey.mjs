@@ -10,7 +10,16 @@
  *   node scripts/journey.mjs [baseUrl]
  */
 
+import { createHmac } from "node:crypto";
+
 const BASE = process.argv[2] ?? "http://localhost:3000";
+
+/** Mirrors lib/artwork.ts so the provider's fetch path can actually be tested. */
+function artworkSig(reference) {
+  const secret = process.env.SESSION_SECRET ?? process.env.ADMIN_PASSWORD;
+  if (!secret) return null;
+  return createHmac("sha256", secret).update(`artwork:${reference}`).digest("base64url").slice(0, 32);
+}
 
 let passed = 0;
 let failed = 0;
@@ -225,6 +234,46 @@ check("lookup 404s for an unknown reference", missingOrder.status === 404, `HTTP
 
 // ---------------------------------------------------------------------------
 
+section("Automated fulfilment");
+
+if (reference) {
+  // The artwork URL is what makes fulfilment set-and-forget. If it is absent or
+  // unsigned, every order silently falls through to manual placement.
+  const orderPage = await req(`/order/${reference}?simulated=1`);
+  await orderPage.text();
+
+  const unsigned = await req(`/api/artwork/${reference}`);
+  check("artwork refuses an unsigned request", unsigned.status === 404, `HTTP ${unsigned.status}`);
+
+  const badSig = await req(`/api/artwork/${reference}?sig=obviouslywrongsignature000000000`);
+  check("artwork refuses a bad signature", badSig.status === 404, `HTTP ${badSig.status}`);
+
+  const sig = artworkSig(reference);
+  if (sig) {
+    const svgArt = await req(`/api/artwork/${reference}?sig=${sig}&format=svg`);
+    const body = await svgArt.text();
+    check("signed artwork renders for the print partner", svgArt.status === 200 && body.startsWith("<svg"), `HTTP ${svgArt.status}`);
+    check("provider artwork is NOT watermarked", !body.includes("KINLINE PREVIEW"));
+    check("artwork contains the purchased names", body.includes("Margaret"));
+    check("artwork carries no NaN geometry", !/NaN|Infinity/.test(body));
+  } else {
+    console.log("  skip signed-artwork checks — set SESSION_SECRET to run them");
+  }
+}
+
+const prodigiUnauth = await req("/api/webhooks/prodigi", {
+  method: "POST",
+  headers: { "Content-Type": "application/json" },
+  body: JSON.stringify({ order: { merchantReference: reference ?? "KIN-X", status: { stage: "Complete" } } }),
+});
+check(
+  "fulfilment callback rejects a missing/!bad key",
+  prodigiUnauth.status === 401 || prodigiUnauth.status === 503,
+  `HTTP ${prodigiUnauth.status}`,
+);
+
+// ---------------------------------------------------------------------------
+
 section("Security");
 
 const webhook = await req("/api/webhooks/stripe", {
@@ -254,7 +303,14 @@ const badLogin = await req("/api/admin/login", {
   headers: { "Content-Type": "application/json" },
   body: JSON.stringify({ password: "wrong-password" }),
 });
-check("wrong admin password is rejected", badLogin.status === 401, `HTTP ${badLogin.status}`);
+// A 429 here is the brute-force limiter doing its job, not a defect. Repeated
+// runs of this suite within the window will trip it, so report it as such
+// rather than as a product failure.
+if (badLogin.status === 429) {
+  console.log("  note admin login is rate-limited right now (8 per 10 min) — limiter working");
+} else {
+  check("wrong admin password is rejected", badLogin.status === 401, `HTTP ${badLogin.status}`);
+}
 
 // XSS: a script tag typed into a chart title must never come back executable.
 const xssRes = await req("/api/charts", {
@@ -282,22 +338,27 @@ if (password) {
     headers: { "Content-Type": "application/json" },
     body: JSON.stringify({ password }),
   });
-  check("admin can sign in", login.status === 200, `HTTP ${login.status}`);
 
-  const dash = await req("/admin");
-  const dashHtml = await dash.text();
-  check("dashboard renders", dash.status === 200, `HTTP ${dash.status}`);
-  check("dashboard shows the funnel", /The funnel/.test(dashHtml));
-  check("dashboard shows gross profit", /Gross profit/.test(dashHtml));
+  if (login.status === 429) {
+    console.log("  skip admin checks — rate-limited. Restart the server to clear the window.");
+  } else {
+    check("admin can sign in", login.status === 200, `HTTP ${login.status}`);
 
-  if (reference) {
-    const detail = await req(`/admin/orders/${reference}`);
-    check("admin order detail renders", detail.status === 200, `HTTP ${detail.status}`);
+    const dash = await req("/admin");
+    const dashHtml = await dash.text();
+    check("dashboard renders", dash.status === 200, `HTTP ${dash.status}`);
+    check("dashboard shows the funnel", /The funnel/.test(dashHtml));
+    check("dashboard shows gross profit", /Gross profit/.test(dashHtml));
+
+    if (reference) {
+      const detail = await req(`/admin/orders/${reference}`);
+      check("admin order detail renders", detail.status === 200, `HTTP ${detail.status}`);
+    }
+
+    const adminSvg = await req(`/api/render/${saved.token}?format=svg`);
+    const adminSvgBody = await adminSvg.text();
+    check("signed-in artwork is NOT watermarked", !adminSvgBody.includes("KINLINE PREVIEW"));
   }
-
-  const adminSvg = await req(`/api/render/${saved.token}?format=svg`);
-  const adminSvgBody = await adminSvg.text();
-  check("signed-in artwork is NOT watermarked", !adminSvgBody.includes("KINLINE PREVIEW"));
 } else {
   console.log("  skip admin checks — set ADMIN_PASSWORD to run them");
 }

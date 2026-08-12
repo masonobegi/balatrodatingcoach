@@ -1,6 +1,7 @@
 import { NextResponse } from "next/server";
 import type Stripe from "stripe";
 
+import { artworkUrlFor } from "@/lib/artwork";
 import { claimWebhook, getOrderBySessionId, redeemDiscount, updateOrder } from "@/lib/db/repo";
 import { env } from "@/lib/env";
 import { getStripe } from "@/lib/stripe";
@@ -107,6 +108,9 @@ async function markPaid(session: Stripe.Checkout.Session) {
   const updated = await updateOrder(order.id, {
     status: "paid",
     paidAt: new Date(),
+    // Stamped at payment so fulfilment has somewhere to fetch the file from.
+    // Without this every order falls through to manual placement.
+    artworkUrl: artworkUrlFor(order.reference),
     stripePaymentIntentId:
       typeof session.payment_intent === "string" ? session.payment_intent : null,
     customerName: address?.name ?? session.customer_details?.name ?? null,

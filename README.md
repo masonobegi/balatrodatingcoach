@@ -145,6 +145,12 @@ every parcel through the operator — inventory, labour, storage, and a second
 shipping leg. The dedication line printed into the artwork serves the same need
 and costs nothing.
 
+**Fulfilment is automatic end to end.** Payment → artwork URL stamped → order
+submitted to the lab → lab prints and ships → provider callback marks it
+shipped and emails the customer their tracking link. Nobody is involved. The
+print partner fetches the file from a signed URL this app serves, so no object
+storage is needed on the critical path.
+
 **The business is fully online to run.** Nothing physical ever reaches the
 operator: prints are made after payment and shipped from the lab direct to the
 customer, and **returns do not exist** — a chart of one specific family has no

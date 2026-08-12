@@ -146,8 +146,33 @@ quality and true delivered cost, then update `PRINT_VARIANTS` in
 catalogue — they are placeholders keyed to the nearest ISO size, and a wrong SKU
 prints the wrong thing at the wrong cost.
 
-When you are ready: set `PRODIGI_API_KEY`, leave `PRODIGI_SANDBOX=true`, place a
-sandbox order end to end, then flip to `false`.
+When you are ready, this is what makes it set-and-forget:
+
+1. Set `PRODIGI_API_KEY` and leave `PRODIGI_SANDBOX=true`.
+2. Generate a callback secret and set `PRODIGI_WEBHOOK_KEY`:
+
+   ```bash
+   node -e "console.log(require('crypto').randomBytes(24).toString('base64url'))"
+   ```
+
+3. Place a sandbox order end to end and confirm the provider fetched the
+   artwork, then flip `PRODIGI_SANDBOX=false`.
+
+With both set, a paid order runs start to finish without you: payment →
+artwork URL stamped → order submitted to the lab → lab prints and ships →
+callback marks it shipped and emails the customer their tracking link. You are
+only involved if someone emails you.
+
+**No object storage is required for this.** The partner fetches the print file
+from a signed URL this app serves (`/api/artwork/{reference}?sig=…`), rendered
+from the frozen chart snapshot so later edits by the customer cannot change
+what goes to press.
+
+> **Verify the callback payload shape.** The provider's callback format could
+> not be confirmed during research, so the handler parses defensively and
+> acknowledges anything it does not recognise rather than erroring. Place one
+> sandbox order, read the callback in your logs, and tighten
+> `app/api/webhooks/prodigi/route.ts` to the real shape.
 
 ---
 

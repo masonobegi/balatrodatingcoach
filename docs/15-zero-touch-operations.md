@@ -19,9 +19,11 @@ is a checklist to hold future decisions to, not a reassurance.
 | **Printing** | Print partner's lab | none | ✅ |
 | **Packing** | Print partner | none | ✅ |
 | **Shipping** | Print partner → customer, direct | none | ✅ |
-| Tracking | Provider webhook, or paste a URL | click | ✅ |
-| Order confirmation email | Resend, automatic | none | ✅ |
-| Shipping email | Automatic on "mark shipped" | click | ✅ |
+| **Order sent to the lab** | Automatic on payment | **none** | ✅ |
+| Artwork delivery to the lab | Lab fetches a signed URL | **none** | ✅ |
+| Tracking | Provider callback | **none** | ✅ |
+| Order confirmation email | Resend, automatic | **none** | ✅ |
+| Shipping email | Automatic on provider callback | **none** | ✅ |
 | **Wrong name → reprint** | Print partner reprints | click | ✅ |
 | **Damaged → replacement** | Print partner reprints | click | ✅ |
 | **Returns** | **None exist. See below.** | none | ✅ |
@@ -33,7 +35,32 @@ is a checklist to hold future decisions to, not a reassurance.
 | Marketing | Facebook groups, Pinterest, email | typing | ✅ |
 | Seeding charts to community figures | Print partner ships direct to them | click | ✅ |
 
-There is no row in this table where the operator touches an object.
+There is no row in this table where the operator touches an object, and — once
+`PRODIGI_API_KEY` and `PRODIGI_WEBHOOK_KEY` are set — no row where they take an
+action at all.
+
+## The fully automatic path
+
+A paid order runs start to finish with nobody involved:
+
+```
+customer pays
+  → Stripe webhook records the order and freezes the chart snapshot
+  → a signed artwork URL is stamped onto the order
+  → the order is submitted to the print partner automatically
+  → the partner fetches the print-ready 300 DPI file from that URL
+  → the partner prints, packs and ships direct to the customer
+  → the partner's callback marks it shipped
+  → the customer is emailed their tracking link
+```
+
+Two things make this work without extra services. The **artwork URL is served
+by this app**, signed with an HMAC bound to the order reference, so no object
+storage is needed on the critical path. And it renders from the order's
+**frozen chart snapshot**, not the live chart — customers do keep editing their
+draft after buying, and the press must receive what they paid for.
+
+Your only involvement is replying to email.
 
 ## Returns do not exist, by policy
 

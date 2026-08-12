@@ -83,6 +83,16 @@ async function submitToProdigi(req: FulfillmentRequest): Promise<FulfillmentResu
       body: JSON.stringify({
         merchantReference: req.reference,
         shippingMethod: "Standard",
+        // Where the provider reports status and tracking back to. This is what
+        // turns fulfilment into set-and-forget: without it somebody has to
+        // watch their dashboard and copy tracking numbers across by hand.
+        ...(env.prodigiWebhookKey
+          ? {
+              callbackUrl: `${env.siteUrl}/api/webhooks/prodigi?key=${encodeURIComponent(
+                env.prodigiWebhookKey,
+              )}`,
+            }
+          : {}),
         recipient: {
           name: req.recipient.name,
           address: {

@@ -33,6 +33,8 @@ export const env = {
 
   prodigiApiKey: read("PRODIGI_API_KEY"),
   prodigiSandbox: read("PRODIGI_SANDBOX") !== "false",
+  /** Shared secret in the fulfilment callback URL. See the webhook route. */
+  prodigiWebhookKey: read("PRODIGI_WEBHOOK_KEY"),
 
   adminPassword: read("ADMIN_PASSWORD"),
   sessionSecret: read("SESSION_SECRET"),
@@ -67,7 +69,8 @@ export const CAPABILITY_NOTES: Record<Capability, string> = {
   webhooks: "Stripe events are not verified, so orders are not confirmed automatically. Set STRIPE_WEBHOOK_SECRET.",
   email: "Transactional email is logged to the console instead of sent. Set RESEND_API_KEY.",
   storage: "Artwork is rendered on demand rather than archived. Set the R2_* variables.",
-  fulfillment: "Paid orders queue for manual fulfilment instead of auto-submitting. Set PRODIGI_API_KEY.",
+  fulfillment:
+    "Paid orders queue for manual fulfilment instead of auto-submitting. Set PRODIGI_API_KEY, and PRODIGI_WEBHOOK_KEY so shipping emails send themselves.",
   admin: "The admin dashboard is unreachable. Set ADMIN_PASSWORD.",
 };
 

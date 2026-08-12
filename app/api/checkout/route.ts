@@ -1,5 +1,6 @@
 import { NextResponse } from "next/server";
 
+import { artworkUrlFor } from "@/lib/artwork";
 import { addSubscriber, createOrder, redeemDiscount, updateOrder } from "@/lib/db/repo";
 import { env } from "@/lib/env";
 import { prepareOrder, toStripeLineItems } from "@/lib/orders";
@@ -63,6 +64,7 @@ export async function POST(request: Request) {
       ...order,
       status: "paid",
       paidAt: new Date(),
+      artworkUrl: artworkUrlFor(order.reference),
       stripeSessionId: `sim_${order.id}`,
       notes: "SIMULATED ORDER — Stripe was not configured when this was placed.",
     });
