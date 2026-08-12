@@ -67,6 +67,11 @@ are already using the product.
    The cold-start problem is the real problem, and it is solved with people, not
    code.
 
+Everything above is done from a laptop. The only physical object anywhere in the
+setup is one optional quality sample, and it can ship to a relative as a gift
+rather than to you — see
+[`docs/15-zero-touch-operations.md`](docs/15-zero-touch-operations.md).
+
 ---
 
 ## The documents
@@ -88,6 +93,7 @@ are already using the product.
 | [`12-failure-detection.md`](docs/12-failure-detection.md) | **Kill criteria.** The numbers that mean stop. |
 | [`13-legal-compliance.md`](docs/13-legal-compliance.md) | Entity, tax, policies, and what needs a lawyer. |
 | [`14-deployment.md`](docs/14-deployment.md) | Exactly what to do, in order. |
+| [`15-zero-touch-operations.md`](docs/15-zero-touch-operations.md) | **Proof the business is fully online** — every touchpoint audited. |
 
 ---
 
@@ -137,8 +143,14 @@ exists only as a post-purchase add-on and free with the largest size.
 **Gift wrap is disabled** (`GIFT_WRAP_ENABLED`). Wrapping by hand would route
 every parcel through the operator — inventory, labour, storage, and a second
 shipping leg. The dedication line printed into the artwork serves the same need
-and costs nothing. **Nothing physical ever touches the operator**; every print
-ships from the lab straight to the customer.
+and costs nothing.
+
+**The business is fully online to run.** Nothing physical ever reaches the
+operator: prints are made after payment and shipped from the lab direct to the
+customer, and **returns do not exist** — a chart of one specific family has no
+resale value, so damage and typos resolve to a reprint rather than a parcel
+coming back. Every touchpoint is audited in
+[`docs/15-zero-touch-operations.md`](docs/15-zero-touch-operations.md).
 
 **No account is ever required.** Not for building, sharing, buying, or tracking.
 The share loop depends on charts being reachable without a login.

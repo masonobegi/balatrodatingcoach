@@ -22,6 +22,21 @@
 > Every framed code path is live and tested. Re-enable the flag once real
 > delivered framed cost is confirmed below ~$45. Until then, read framed figures
 > below as modelling, not as the live catalogue.
+>
+> **Also superseded: `KIN-ADD-WRAP` (gift wrap + handwritten card) is disabled.**
+> Wrapping by hand requires the parcel to route lab → operator → wrap → re-ship,
+> which is inventory, storage, labour, and a second shipping leg. The operator
+> has no storage space and handles nothing physical. The gifting need is met by
+> the chart's own dedication line, printed into the artwork.
+>
+> The argument below that "an unframed rolled poster is not a gift — it's an
+> errand" is the strongest case against both decisions, and it is a real cost,
+> not a dismissed one. It is overruled on two grounds: framed earns *less
+> absolute profit* per order than unframed, and neither framing nor wrapping can
+> be done without the operator physically handling stock. If conversion data
+> later shows the errand objection is costing real orders, the fix is a
+> fulfilment partner that frames and inserts a printed gift note **at the lab** —
+> never the operator's own hands.
 
 
 
