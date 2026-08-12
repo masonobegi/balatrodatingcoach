@@ -1,0 +1,257 @@
+@import "tailwindcss";
+
+/*
+ * KINLINE DESIGN SYSTEM
+ *
+ * The reference is a fine-press print studio, not a software company. Buyers
+ * are 35–60 and 55–75, buying an emotional object for a parent, and they are
+ * deciding in the first two seconds whether this looks like somewhere you can
+ * safely spend $79. Everything below serves that judgement.
+ *
+ * Rules held throughout:
+ *   · Warm paper, never white. Warm near-black, never #000.
+ *   · Hairline rules do the work that borders and drop shadows do elsewhere.
+ *   · Radii of 2–3px. Pill buttons and rounded cards read as "app", not "press".
+ *   · No gradients, no glass, no glow. One accent colour, used sparingly.
+ *   · Letterspaced small caps for labels; Garamond for anything large.
+ *   · Generous vertical rhythm — crowding reads as cheap.
+ */
+
+@font-face {
+  font-family: "EB Garamond";
+  font-style: normal;
+  font-weight: 400;
+  font-display: swap;
+  src: url("/fonts/eb-garamond-latin-400-normal.woff2") format("woff2");
+  unicode-range: U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA,
+    U+02DC, U+0304, U+0308, U+0329, U+2000-206F, U+2074, U+20AC, U+2122, U+2191,
+    U+2193, U+2212, U+2215, U+FEFF, U+FFFD;
+}
+@font-face {
+  font-family: "EB Garamond";
+  font-style: italic;
+  font-weight: 400;
+  font-display: swap;
+  src: url("/fonts/eb-garamond-latin-400-italic.woff2") format("woff2");
+}
+@font-face {
+  font-family: "EB Garamond";
+  font-style: normal;
+  font-weight: 500;
+  font-display: swap;
+  src: url("/fonts/eb-garamond-latin-500-normal.woff2") format("woff2");
+}
+@font-face {
+  font-family: "EB Garamond";
+  font-style: normal;
+  font-weight: 600;
+  font-display: swap;
+  src: url("/fonts/eb-garamond-latin-600-normal.woff2") format("woff2");
+}
+
+@theme {
+  --color-paper: #fbf8f2;
+  --color-paper-deep: #f3ede2;
+  --color-paper-raised: #fffdf9;
+  --color-ink: #23201b;
+  --color-ink-soft: #4a423a;
+  --color-ink-muted: #7d7266;
+  --color-rule: #e3dace;
+  --color-rule-strong: #cfc2ae;
+  --color-walnut: #7a5c3e;
+  --color-walnut-deep: #5c4530;
+  --color-sage: #35624a;
+  --color-danger: #8c3a2e;
+  --color-success: #35624a;
+
+  --font-serif: "EB Garamond", Garamond, "Palatino Linotype", Palatino, Georgia,
+    serif;
+  --font-sans: ui-sans-serif, system-ui, -apple-system, "Segoe UI", Roboto,
+    "Helvetica Neue", Arial, sans-serif;
+
+  --radius-sm: 2px;
+  --radius-md: 3px;
+}
+
+:root {
+  color-scheme: light;
+}
+
+html {
+  -webkit-text-size-adjust: 100%;
+}
+
+body {
+  background-color: var(--color-paper);
+  color: var(--color-ink);
+  font-family: var(--font-sans);
+  font-size: 16px;
+  line-height: 1.6;
+  -webkit-font-smoothing: antialiased;
+  text-rendering: optimizeLegibility;
+}
+
+h1,
+h2,
+h3,
+h4,
+.font-display {
+  font-family: var(--font-serif);
+  font-weight: 400;
+  letter-spacing: -0.005em;
+  line-height: 1.15;
+}
+
+/* Small caps label. Used for eyebrows, field labels, table headers. */
+.label {
+  font-family: var(--font-sans);
+  font-size: 0.6875rem;
+  font-weight: 600;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: var(--color-ink-muted);
+}
+
+.rule {
+  border: 0;
+  border-top: 1px solid var(--color-rule);
+}
+
+/* A short centred rule under a heading — the one recurring ornament. */
+.rule-accent::after {
+  content: "";
+  display: block;
+  width: 3.5rem;
+  height: 2px;
+  margin: 1rem auto 0;
+  background: var(--color-walnut);
+}
+
+.prose-kin {
+  font-family: var(--font-serif);
+  font-size: 1.1875rem;
+  line-height: 1.65;
+  color: var(--color-ink-soft);
+}
+.prose-kin p + p {
+  margin-top: 1em;
+}
+
+/*
+ * Buttons. Square-ish, ink-filled, no shadow. The hover state moves colour
+ * rather than elevation, because a press studio has no z-axis.
+ */
+.btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.5rem;
+  padding: 0.8125rem 1.5rem;
+  border-radius: var(--radius-sm);
+  font-family: var(--font-sans);
+  font-size: 0.9375rem;
+  font-weight: 600;
+  letter-spacing: 0.01em;
+  cursor: pointer;
+  transition: background-color 140ms ease, color 140ms ease, border-color 140ms ease;
+  border: 1px solid transparent;
+  text-align: center;
+}
+.btn:disabled {
+  opacity: 0.45;
+  cursor: not-allowed;
+}
+.btn-primary {
+  background: var(--color-ink);
+  color: var(--color-paper);
+}
+.btn-primary:hover:not(:disabled) {
+  background: var(--color-walnut-deep);
+}
+.btn-secondary {
+  background: transparent;
+  color: var(--color-ink);
+  border-color: var(--color-rule-strong);
+}
+.btn-secondary:hover:not(:disabled) {
+  border-color: var(--color-ink);
+  background: var(--color-paper-deep);
+}
+.btn-quiet {
+  background: transparent;
+  color: var(--color-ink-muted);
+  padding: 0.5rem 0.75rem;
+}
+.btn-quiet:hover:not(:disabled) {
+  color: var(--color-ink);
+}
+
+/* Inputs. Underline-first, which suits a form that is mostly names. */
+.field {
+  width: 100%;
+  padding: 0.625rem 0.75rem;
+  background: var(--color-paper-raised);
+  border: 1px solid var(--color-rule);
+  border-radius: var(--radius-sm);
+  font-family: var(--font-serif);
+  font-size: 1.0625rem;
+  color: var(--color-ink);
+  transition: border-color 120ms ease;
+}
+.field::placeholder {
+  color: var(--color-ink-muted);
+  opacity: 0.65;
+  font-style: italic;
+}
+.field:focus {
+  outline: none;
+  border-color: var(--color-walnut);
+  box-shadow: 0 0 0 3px rgb(122 92 62 / 0.12);
+}
+
+.card {
+  background: var(--color-paper-raised);
+  border: 1px solid var(--color-rule);
+  border-radius: var(--radius-md);
+}
+
+/*
+ * Focus visibility is a legal exposure as much as a usability one — ADA/WCAG
+ * demand-letter activity against e-commerce is real and growing, and an
+ * invisible focus ring is among the easiest findings to document.
+ */
+:where(a, button, input, select, textarea, [tabindex]):focus-visible {
+  outline: 2px solid var(--color-walnut);
+  outline-offset: 2px;
+  border-radius: var(--radius-sm);
+}
+
+.skip-link {
+  position: absolute;
+  left: -9999px;
+  top: 0;
+  z-index: 100;
+  padding: 0.75rem 1rem;
+  background: var(--color-ink);
+  color: var(--color-paper);
+}
+.skip-link:focus {
+  left: 0;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    transition-duration: 0.01ms !important;
+    scroll-behavior: auto !important;
+  }
+}
+
+/* The chart preview is authored in SVG at print scale; it always fits its box. */
+.chart-frame svg {
+  display: block;
+  width: 100%;
+  height: auto;
+}
